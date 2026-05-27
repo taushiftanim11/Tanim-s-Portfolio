@@ -2,10 +2,20 @@
 
 import React, { useRef, useEffect } from "react";
 import { mouse, startMouseTracking } from "@/lib/smooth-mouse";
+import { useTheme } from "next-themes";
 
 const DotGrid: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const rafRef    = useRef<number | undefined>(undefined);
+  const dotColorRef   = useRef("71, 85, 105");
+  const dotOpacityRef = useRef(1.0);
+  const { resolvedTheme } = useTheme();
+
+  useEffect(() => {
+    const isLight = resolvedTheme === "light";
+    dotColorRef.current   = isLight ? "100, 116, 139" : "71, 85, 105";
+    dotOpacityRef.current = isLight ? 0.45 : 1.0;
+  }, [resolvedTheme]);
 
   useEffect(() => {
     startMouseTracking();
@@ -71,7 +81,7 @@ const DotGrid: React.FC = () => {
 
         ctx.beginPath();
         ctx.arc(d.x, d.y, size, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(71, 85, 105, ${Math.min(opacity, 0.92).toFixed(3)})`;
+        ctx.fillStyle = `rgba(${dotColorRef.current}, ${Math.min(opacity * dotOpacityRef.current, 0.92).toFixed(3)})`;
         ctx.fill();
       }
 
@@ -93,10 +103,23 @@ const DotGrid: React.FC = () => {
 };
 
 export default function BackgroundNoise() {
+  const { resolvedTheme } = useTheme();
+  const [mounted, setMounted] = React.useState(false);
+  React.useEffect(() => setMounted(true), []);
+  const isDark = !mounted || resolvedTheme !== "light";
+
   return (
-    <div className="fixed inset-0 -z-10 bg-black">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_520px_at_35%_240px,#3b82f640,transparent)]" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_520px_at_70%_540px,#a855f740,transparent)]" />
+    <div className={`fixed inset-0 -z-10 transition-colors duration-500 ${isDark ? "bg-black" : "bg-white"}`}>
+      <div className={`absolute inset-0 ${
+        isDark
+          ? "bg-[radial-gradient(circle_520px_at_35%_240px,#3b82f640,transparent)]"
+          : "bg-[radial-gradient(circle_520px_at_35%_240px,#3b82f618,transparent)]"
+      }`} />
+      <div className={`absolute inset-0 ${
+        isDark
+          ? "bg-[radial-gradient(circle_520px_at_70%_540px,#a855f740,transparent)]"
+          : "bg-[radial-gradient(circle_520px_at_70%_540px,#a855f718,transparent)]"
+      }`} />
       <DotGrid />
     </div>
   );

@@ -1,6 +1,16 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+@variant dark (&:where(.dark, .dark *));
+
+:root {
+  --watermark-color: rgba(0, 0, 0, 0.04);
+}
+
+.dark {
+  --watermark-color: rgba(255, 255, 255, 0.035);
+}
+
 html, body {
   overflow: hidden;
   height: 100%;
@@ -13,16 +23,18 @@ body::-webkit-scrollbar {
 }
 
 :root {
-  --primary: 168, 85, 247;
+  --primary: 129, 140, 248;
   --secondary: 99, 102, 241;
   --sphere-rotation-duration: 240s;
   --grid-pan-duration: 180s;
   --core-glow-duration: 25s;
-  --wire-opacity: 0.85;
-  --wire-shadow: 70px;
+  --wire-opacity: 0.6;
+  --wire-shadow: 50px;
   --core-blur: 200px;
   --parallax-depth: 35;
   --lerp: 0.08;
+  --sphere-size: 420px;
+  --sphere-half: -210px;
 }
 
 /* ── Keyframes ─────────────────────────────── */
@@ -67,13 +79,13 @@ body::-webkit-scrollbar {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 700px;
-  height: 700px;
-  margin-left: -350px;
-  margin-top: -350px;
+  width: var(--sphere-size);
+  height: var(--sphere-size);
+  margin-left: var(--sphere-half);
+  margin-top: var(--sphere-half);
   border-radius: 50%;
   border: 1px solid rgba(var(--primary), var(--wire-opacity));
-  box-shadow: 0 0 var(--wire-shadow) rgba(var(--primary), 0.4);
+  box-shadow: 0 0 var(--wire-shadow) rgba(var(--primary), 0.3);
 }
 
 .panning-grid {

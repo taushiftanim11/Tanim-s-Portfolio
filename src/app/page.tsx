@@ -7,7 +7,7 @@ import Hero from "@/components/sections/Hero";
 
 export default function Page() {
   return (
-    <div className="relative h-screen overflow-hidden text-white">
+    <div className="relative h-screen overflow-hidden dark:text-white text-gray-900">
       <DotGrid />
       <ClientEffects />
       <Navbar />
