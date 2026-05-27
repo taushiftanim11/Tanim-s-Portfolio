@@ -1,0 +1,89 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+html, body {
+  overflow: hidden;
+  height: 100%;
+  scrollbar-width: none;
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none;
+}
+
+:root {
+  --primary: 168, 85, 247;
+  --secondary: 99, 102, 241;
+  --sphere-rotation-duration: 240s;
+  --grid-pan-duration: 180s;
+  --core-glow-duration: 25s;
+  --wire-opacity: 0.85;
+  --wire-shadow: 70px;
+  --core-blur: 200px;
+  --parallax-depth: 35;
+  --lerp: 0.08;
+}
+
+/* ── Keyframes ─────────────────────────────── */
+
+@keyframes sphereRotate {
+  from { transform: rotateY(0deg) rotateX(0deg); }
+  to   { transform: rotateY(360deg) rotateX(360deg); }
+}
+
+@keyframes orbitOuter {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes orbitInner {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes gridPan {
+  0%   { background-position: 0% 0%; }
+  100% { background-position: 100% 100%; }
+}
+
+@keyframes coreGlow {
+  0%, 100% { transform: scale(1.0); opacity: 0.9; }
+  50%       { transform: scale(1.05); opacity: 1; }
+}
+
+/* ── Sphere classes ─────────────────────────── */
+
+.sphere-container {
+  perspective: 1000px;
+}
+
+.sphere-rotation {
+  transform-style: preserve-3d;
+  animation: sphereRotate var(--sphere-rotation-duration) linear infinite;
+}
+
+.wireframe-line {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 700px;
+  height: 700px;
+  margin-left: -350px;
+  margin-top: -350px;
+  border-radius: 50%;
+  border: 1px solid rgba(var(--primary), var(--wire-opacity));
+  box-shadow: 0 0 var(--wire-shadow) rgba(var(--primary), 0.4);
+}
+
+.panning-grid {
+  animation: gridPan var(--grid-pan-duration) linear infinite;
+}
+
+.core-light {
+  animation: coreGlow var(--core-glow-duration) ease-in-out infinite;
+}
+
+.vignette-overlay {
+  background: radial-gradient(ellipse at center, transparent 40%, rgba(0, 0, 0, 0.85) 100%);
+}
